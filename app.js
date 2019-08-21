@@ -14,8 +14,24 @@
         {
             var randomIndex = Math.floor(Math.random() * quotes.length);
             return this.quotes[randomIndex];
+        },
+        generateRandomQuotes: function(delay,callback){
+            callback(this.getRandomQuote());
+            setInterval(function(){
+                callback(this.getRandomQuote());
+            },delay);
         }
     })
+
+    var TestService = Class({
+        constructor: function(){},
+        getRandomQuote: function (){
+            return {
+                line : 'jakis inny cytat z drugiego serwisu',
+                author : 'Jan Niezbędny'
+            };
+        }
+    });
 
 
     var quotes = [
@@ -58,7 +74,9 @@
     var AppModule = NgModule({
         imports: [BrowserModule],
         declarations: [AppComponent, SecondComponent],
-        providers: [QuoteService],
+        providers: [
+            {provide: QuoteService, useClass :QuoteService}
+        ],
         bootstrap: [AppComponent]
     })
     .Class({
